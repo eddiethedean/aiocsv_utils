@@ -1,7 +1,7 @@
 from csv import DictWriter
 
 
-def create_errors_csv(path: str, column_names: list[str]) -> None:
+def create_csv(path: str, column_names: list[str]) -> None:
     """Replaces file at path with new csv."""
     with open(path, 'w') as f:
         dictwriter = DictWriter(f, fieldnames=column_names)
