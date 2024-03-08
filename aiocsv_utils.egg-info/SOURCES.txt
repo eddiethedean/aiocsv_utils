@@ -1,13 +1,13 @@
 setup.py
+aiocsv_utils/__init__.py
+aiocsv_utils/convert.py
+aiocsv_utils/read.py
+aiocsv_utils/write.py
 aiocsv_utils.egg-info/PKG-INFO
 aiocsv_utils.egg-info/SOURCES.txt
 aiocsv_utils.egg-info/dependency_links.txt
 aiocsv_utils.egg-info/requires.txt
 aiocsv_utils.egg-info/top_level.txt
-src/__init__.py
-src/convert.py
-src/read.py
-src/write.py
 tests/__init__.py
 tests/test_read.py
 tests/test_write.py

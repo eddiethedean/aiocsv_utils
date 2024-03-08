@@ -1,13 +1,26 @@
 from typing import AsyncGenerator, Iterable, Any
 
 import aiofiles
-from aiocsv import AsyncDictReader
+from aiocsv import AsyncDictReader, AsyncReader
 import pandas as pd
 from aioitertools.more_itertools import chunked
+import aioitertools
 
 from .convert import convert_str
 
 Record = dict[str, Any]
+
+
+async def csv_headers(
+    path: str,
+    mode="r",
+    encoding="utf-8",
+    newline="",
+    delimiter=','
+) -> list[str]:
+    async with aiofiles.open(path, mode=mode, encoding=encoding, newline=newline) as afp:
+        reader = AsyncReader(afp, delimiter=delimiter)
+        return await anext(reader)
 
 
 async def csv_to_records(
@@ -23,7 +36,7 @@ async def csv_to_records(
     -------
     >>> import asyncio
     >>>
-    >>> from csv_utils import csv_to_records
+    >>> from aiocsv_utils import csv_to_records
     >>>
     >>> async def read_first_record() -> dict | None:
     >>>     async for row in csv_to_records('data/cities.csv'):
@@ -66,8 +79,11 @@ async def csv_to_df(
     newline="",
     delimiter=','
 ) -> pd.DataFrame:
-    records = csv_to_records(path, mode, encoding, newline, delimiter)
-    return await async_records_to_df(records)
+    records = await aioitertools.list(csv_to_records(path, mode, encoding, newline, delimiter))
+    if len(records) == 0:
+        columns = await csv_headers(path, mode, encoding, newline, delimiter)
+        return pd.DataFrame({col: [] for col in columns})
+    return records_to_df(records)
         
         
 async def csv_to_df_chunks(
