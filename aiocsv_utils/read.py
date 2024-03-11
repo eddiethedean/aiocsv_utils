@@ -1,23 +1,30 @@
-from typing import AsyncGenerator, Iterable, Any
+from typing import AsyncGenerator, Any
 
 import aiofiles
 from aiocsv import AsyncDictReader, AsyncReader
-import pandas as pd
 from aioitertools.more_itertools import chunked
-import aioitertools
 
 from .convert import convert_str
-
-Record = dict[str, Any]
 
 
 async def csv_headers(
     path: str,
-    mode="r",
-    encoding="utf-8",
-    newline="",
+    mode='r',
+    encoding='utf-8',
+    newline='',
     delimiter=','
 ) -> list[str]:
+    """Asynchronously read the header names of a csv file.
+    
+    Example
+    -------
+    >>> import asyncio
+    >>>
+    >>> from aiocsv_utils.read import csv_headers
+    >>>
+    >>> asyncio.run(csv_headers('data/cities.csv'))
+    ['LatD', 'LatM', 'LatS', 'NS', 'LonD', 'LonM', 'LonS', 'EW', 'City', 'State']
+    """
     async with aiofiles.open(path, mode=mode, encoding=encoding, newline=newline) as afp:
         reader = AsyncReader(afp, delimiter=delimiter)
         return await anext(reader)
@@ -25,20 +32,20 @@ async def csv_headers(
 
 async def csv_to_records(
     path: str,
-    mode="r",
-    encoding="utf-8",
-    newline="",
+    mode='r',
+    encoding='utf-8',
+    newline='',
     delimiter=','
-) -> AsyncGenerator[Record, None]:
+) -> AsyncGenerator[dict[str, Any], None]:
     """Asynchronously read a csv and async yield each record.
     
     Example
     -------
     >>> import asyncio
     >>>
-    >>> from aiocsv_utils import csv_to_records
+    >>> from aiocsv_utils.read import csv_to_records
     >>>
-    >>> async def read_first_record() -> dict | None:
+    >>> async def read_first_record() -> list[dict] | None:
     >>>     async for row in csv_to_records('data/cities.csv'):
     >>>         return row
     >>>
@@ -54,45 +61,29 @@ async def csv_to_records(
 async def csv_to_records_chunks(
     path: str,
     chunk_size: int,
-    mode="r",
-    encoding="utf-8",
-    newline="",
+    mode='r',
+    encoding='utf-8',
+    newline='',
     delimiter=','
-) -> AsyncGenerator[list[Record], None]:
+) -> AsyncGenerator[list[dict[str, Any]], None]:
+    """Asynchronously read a csv and async yield chunks of records.
+    
+    Example
+    -------
+    >>> import asyncio
+    >>>
+    >>> from aiocsv_utils.read import csv_to_records_chunks
+    >>>
+    >>> async def read_first_two_record() -> dict | None:
+    >>>     async for chunk in csv_to_records_chunks('data/cities.csv', 2):
+    >>>         return chunk
+    >>>
+    >>> asyncio.run(read_first_two_record())
+    [{'LatD': 41, 'LatM': 5, 'LatS': 59, 'NS': 'N', 'LonD': 80, 'LonM': 39,
+    'LonS': 0, 'EW': 'W', 'City': 'Youngstown', 'State': 'OH'},
+    {'LatD': 42, 'LatM': 52, 'LatS': 48, 'NS': 'N', 'LonD': 97, 'LonM': 23,
+    'LonS': 23, 'EW': 'W', 'City': 'Yankton', 'State': 'SD'}]
+    """
     records = csv_to_records(path, mode, encoding, newline, delimiter)
     async for chunk in chunked(records, chunk_size):
         yield chunk
-
-            
-async def async_records_to_df(records: AsyncGenerator[Record, None]) -> pd.DataFrame:
-    return pd.DataFrame([row async for row in records])
-
-
-def records_to_df(records: Iterable[Record]) -> pd.DataFrame:
-    return pd.DataFrame(records)
-
-
-async def csv_to_df(
-    path: str,
-    mode="r",
-    encoding="utf-8",
-    newline="",
-    delimiter=','
-) -> pd.DataFrame:
-    records = await aioitertools.list(csv_to_records(path, mode, encoding, newline, delimiter))
-    if len(records) == 0:
-        columns = await csv_headers(path, mode, encoding, newline, delimiter)
-        return pd.DataFrame({col: [] for col in columns})
-    return records_to_df(records)
-        
-        
-async def csv_to_df_chunks(
-    path: str,
-    chunk_size: int,
-    mode="r",
-    encoding="utf-8",
-    newline="",
-    delimiter=','
-) -> AsyncGenerator[pd.DataFrame, None]:
-    async for chunk in csv_to_records_chunks(path, chunk_size, mode, encoding, newline, delimiter):
-        yield records_to_df(chunk)

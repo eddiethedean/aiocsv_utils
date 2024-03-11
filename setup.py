@@ -6,7 +6,6 @@ setup(
     install_requires = [
         'aiofiles',
         'aiocsv',
-        'pandas',
         'aioitertools'
     ]
 )
