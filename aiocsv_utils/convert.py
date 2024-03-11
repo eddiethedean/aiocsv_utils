@@ -1,6 +1,18 @@
-def convert_str(value: str) -> float | int | bool | str:
-    """Takes a str value and tries to convert it to float, int, or bool
-       Returns converted value if successful, or str value if fails to convert.
+import typing as _typing
+
+
+def convert_str(value: _typing.Any) -> float | int | bool | str:
+    """Tries to coerce a value to float, int, bool and finally str.
+    
+    Parameters
+    ----------
+    value : Any
+        Value to be coerced into float, int, or bool.
+        
+    Returns
+    -------
+    float | int | bool | str
+        Returns coerced value if successful, or str value if it fails to coerce.
     """
     value = str(value)
     if value.count('.') == 1:
