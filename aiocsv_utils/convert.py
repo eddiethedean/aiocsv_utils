@@ -13,6 +13,8 @@ def convert_str(value: str) -> float | int | bool | str:
             return int(value)
         except ValueError:
             pass
-    if value in {'True', 'False'}:
-        return bool(value)
+    if value == 'True':
+        return True
+    if value == 'False':
+        return False
     return value
