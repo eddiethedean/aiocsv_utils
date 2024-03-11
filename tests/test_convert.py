@@ -30,3 +30,15 @@ def test_convert_str_false():
     
 def test_convert_list():
     assert convert_str([1, 2, 3]) == '[1, 2, 3]'
+    
+def test_convert_bad_float():
+    assert convert_str('1.13Q') == '1.13Q'
+    
+def test_convert_unicode():
+    assert convert_str('\u0030') == 0
+    
+def test_convert_negative():
+    assert convert_str('-1') == -1
+    
+def test_covert_power():
+    assert convert_str('\u00B2') == '\u00B2'

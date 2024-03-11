@@ -8,11 +8,10 @@ def convert_str(value: str) -> float | int | bool | str:
             return float(value)
         except ValueError:
             pass
-    if value.isnumeric():
-        try:
-            return int(value)
-        except ValueError:
-            pass
+    try:
+        return int(value)
+    except ValueError:
+        pass
     if value == 'True':
         return True
     if value == 'False':
