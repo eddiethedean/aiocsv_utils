@@ -1,7 +1,8 @@
 import pytest
 
-from aiocsv_utils.read import csv_to_records, csv_to_records_chunks
 from aiocsv_utils.read import csv_headers
+from aiocsv_utils.read import csv_to_records
+from aiocsv_utils.read import csv_to_records_chunks
 
 
 @pytest.mark.asyncio

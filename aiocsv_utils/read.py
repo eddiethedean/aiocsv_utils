@@ -1,10 +1,10 @@
-from typing import AsyncGenerator, Any
+import typing as _typing
 
-import aiofiles
-from aiocsv import AsyncDictReader, AsyncReader
-from aioitertools.more_itertools import chunked
+import aiofiles as _aiofiles
+import aiocsv as _aiocsv
+from aioitertools.more_itertools import chunked as _chunked
 
-from .convert import convert_str
+from .convert import convert_str as _convert_str
 
 
 async def csv_headers(
@@ -25,8 +25,8 @@ async def csv_headers(
     >>> asyncio.run(csv_headers('data/cities.csv'))
     ['LatD', 'LatM', 'LatS', 'NS', 'LonD', 'LonM', 'LonS', 'EW', 'City', 'State']
     """
-    async with aiofiles.open(path, mode=mode, encoding=encoding, newline=newline) as afp:
-        reader = AsyncReader(afp, delimiter=delimiter)
+    async with _aiofiles.open(path, mode=mode, encoding=encoding, newline=newline) as afp:
+        reader = _aiocsv.AsyncReader(afp, delimiter=delimiter)
         return await anext(reader)
 
 
@@ -36,7 +36,7 @@ async def csv_to_records(
     encoding='utf-8',
     newline='',
     delimiter=','
-) -> AsyncGenerator[dict[str, Any], None]:
+) -> _typing.AsyncGenerator[dict[str, _typing.Any], None]:
     """Asynchronously read a csv and async yield each record.
     
     Example
@@ -53,9 +53,9 @@ async def csv_to_records(
     {'LatD': 41, 'LatM': 5, 'LatS': 59, 'NS': 'N', 'LonD': 80, 'LonM': 39,
      'LonS': 0, 'EW': 'W', 'City': 'Youngstown', 'State': 'OH'}
     """
-    async with aiofiles.open(path, mode=mode, encoding=encoding, newline=newline) as afp:
-        async for row in AsyncDictReader(afp, delimiter=delimiter):
-            yield {col: convert_str(val) for col, val in row.items()}
+    async with _aiofiles.open(path, mode=mode, encoding=encoding, newline=newline) as afp:
+        async for row in _aiocsv.AsyncDictReader(afp, delimiter=delimiter):
+            yield {col: _convert_str(val) for col, val in row.items()}
             
             
 async def csv_to_records_chunks(
@@ -65,7 +65,7 @@ async def csv_to_records_chunks(
     encoding='utf-8',
     newline='',
     delimiter=','
-) -> AsyncGenerator[list[dict[str, Any]], None]:
+) -> _typing.AsyncGenerator[list[dict[str, _typing.Any]], None]:
     """Asynchronously read a csv and async yield chunks of records.
     
     Example
@@ -85,5 +85,5 @@ async def csv_to_records_chunks(
     'LonS': 23, 'EW': 'W', 'City': 'Yankton', 'State': 'SD'}]
     """
     records = csv_to_records(path, mode, encoding, newline, delimiter)
-    async for chunk in chunked(records, chunk_size):
+    async for chunk in _chunked(records, chunk_size):
         yield chunk
