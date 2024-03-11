@@ -83,7 +83,7 @@ async def csv_headers(
     Raises
     ------
     FileNotFoundError
-        If file does not exist.
+        If file path does not exist.
         
     Example
     -------

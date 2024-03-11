@@ -9,8 +9,24 @@ async def create_csv(
     path: str,
     headers: _typing.Sequence[str]
 ) -> None:
-    """Replace file at path with new empty csv.
+    """Replace or create file at path with empty CSV with column headers.
     
+    Parameters
+    ----------
+    path : str
+        File path to CSV file.
+    headers : Sequence[str]
+        Column header names to be written to new CSV file.
+
+    Returns
+    -------
+    None
+    
+    Raises
+    ------
+    FileNotFoundError
+        If file path directory does not exist.
+        
     Example
     -------
     >>> import asyncio
@@ -30,11 +46,24 @@ async def create_csv(
 
 async def write_csv_file_row(
     async_file: _AsyncTextIOWrapper,
-    record: dict,
+    record: dict[str, _typing.Any],
     headers: _typing.Sequence[str]
 ) -> None:
-    """Appends a record to a csv file.
+    """Append a record to a CSV file.
     
+    Parameters
+    ----------
+    async_file : AsyncTextIOWrapper
+        Async file object from aiofiles.read
+    record : dict[str, Any]
+        Record to be written to CSV file.
+    headers : Sequence[str]
+        CSV Column header names.
+
+    Returns
+    -------
+    None
+        
     Example
     -------
     >>> import asyncio
@@ -62,11 +91,29 @@ async def write_csv_file_row(
 
 async def write_csv_row(
     path: str,
-    record: dict,
+    record: dict[str, _typing.Any],
     headers: _typing.Sequence[str]
 ) -> None:
-    """Appends a record to a csv file.
+    """Append a record to a CSV file.
     
+    Parameters
+    ----------
+    path : str
+        File path to CSV file.
+    record : dict[str, Any]
+        Record to be written to CSV file.
+    headers : Sequence[str]
+        CSV Column header names.
+
+    Returns
+    -------
+    None
+    
+    Raises
+    ------
+    FileNotFoundError
+        If file path does not exist.
+        
     Example
     -------
     >>> import asyncio
@@ -88,11 +135,24 @@ async def write_csv_row(
 
 async def write_csv_file_rows(
     async_file: _AsyncTextIOWrapper,
-    records: list[dict],
+    records: list[dict[str, _typing.Any]],
     headers: _typing.Sequence[str]
 ) -> None:
-    """Appends a list of records to a csv file.
+    """Append a list of records to a CSV file.
     
+    Parameters
+    ----------
+    async_file : AsyncTextIOWrapper
+        Async file object from aiofiles.read
+    records : list[dict[str, Any]]
+        List of records to be written to CSV file.
+    headers : Sequence[str]
+        CSV Column header names.
+
+    Returns
+    -------
+    None
+        
     Example
     -------
     >>> import asyncio
@@ -121,11 +181,29 @@ async def write_csv_file_rows(
         
 async def write_csv_rows(
     path: str,
-    records: list[dict],
+    records: list[dict[str, _typing.Any]],
     headers: _typing.Sequence[str]
 ) -> None:
-    """Appends a list of records to a csv file.
+    """Append a list of records to a CSV file.
     
+    Parameters
+    ----------
+    path : str
+        File path to CSV file.
+    records : list[dict[str, Any]]
+        List of records to be written to CSV file.
+    headers : Sequence[str]
+        CSV Column header names.
+
+    Returns
+    -------
+    None
+    
+    Raises
+    ------
+    FileNotFoundError
+        If file path does not exist.
+        
     Example
     -------
     >>> import asyncio
