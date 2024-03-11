@@ -83,7 +83,7 @@ async def csv_headers(
     Raises
     ------
     FileNotFoundError
-        If file path does not exist.
+        If file does not exist.
         
     Example
     -------
@@ -105,7 +105,7 @@ async def csv_file_to_records(
     newline='',
     delimiter=','
 ) -> _typing.AsyncGenerator[dict[str, _typing.Any], None]:
-    """Asynchronously read a csv file and async yield each record.
+    """Asynchronously read a CSV file and async yield each record.
     
     Parameters
     ----------
@@ -152,7 +152,7 @@ async def csv_to_records(
     newline='',
     delimiter=','
 ) -> _typing.AsyncGenerator[dict[str, _typing.Any], None]:
-    """Asynchronously read a csv by path and async yield each record.
+    """Asynchronously read a CSV by path and async yield each record.
     
     Parameters
     ----------
@@ -204,7 +204,7 @@ async def csv_file_to_records_chunks(
     newline='',
     delimiter=','
 ) -> _typing.AsyncGenerator[list[dict[str, _typing.Any]], None]:
-    """Asynchronously read a csv file and async yield chunks of records.
+    """Asynchronously read a CSV file and async yield chunks of records.
     
     Parameters
     ----------
@@ -253,7 +253,7 @@ async def csv_to_records_chunks(
     newline='',
     delimiter=','
 ) -> _typing.AsyncGenerator[list[dict[str, _typing.Any]], None]:
-    """Asynchronously read a csv by path and async yield chunks of records.
+    """Asynchronously read a CSV by path and async yield chunks of records.
     
     Parameters
     ----------
