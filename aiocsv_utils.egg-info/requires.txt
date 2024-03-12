@@ -1,4 +1,0 @@
-aiofiles
-aiocsv
-pandas
-aioitertools

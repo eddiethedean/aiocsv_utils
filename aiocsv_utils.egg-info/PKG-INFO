@@ -1,7 +1,0 @@
-Metadata-Version: 2.1
-Name: aiocsv_utils
-Version: 0.0.0
-Requires-Dist: aiofiles
-Requires-Dist: aiocsv
-Requires-Dist: pandas
-Requires-Dist: aioitertools
